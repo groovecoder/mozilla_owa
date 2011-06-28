@@ -424,11 +424,12 @@
   body.loaded {display: block}
 </style>
 
+<script language="javascript" type="text/javascript" src="js/socket.io.js"></script>
 <script>
 var friendWindows = [];
 var idx = 1;
 var slides;
-var slideserver = null;
+var socket = null;
 var clientID = 0;
 
 /* main() */
@@ -444,24 +445,28 @@ function handleKeyCode(keyCode){
 }
 
 function handleMessage(msg){
-    msg = JSON.parse(msg.data);
+    msg = JSON.parse(msg);
     if (msg.type == "id")
-        slideserver.connID = msg.id;
+        socket.connID = msg.id;
     handleKeyCode(msg.keyCode);
 }
 
 function connect(){
     try {
-        slideserver = new WebSocket("ws://localhost:8080");
+        socket = io.connect('http://localhost:8080');
     } catch(e) {
-        slideserver = new MozWebSocket("ws://localhost:8080");
+        try {
+            slideserver = new WebSocket("ws://localhost:8080");
+        } catch (e) {
+            slideserver = new MozWebSocket("ws://localhost:8080");
+        }
     }
-    slideserver.onmessage = function(event){handleMessage(event);}
+    socket.on('message', function(event){handleMessage(event);})
 }
 
 function send(keyCode){
-    var msg = {'id': slideserver.connID, 'keyCode': keyCode};
-    slideserver.send(JSON.stringify(msg));
+    var msg = {'id': socket.connID, 'keyCode': keyCode};
+    socket.send(JSON.stringify(msg));
 }
 
 window.onload = function() {
@@ -481,7 +486,7 @@ window.onkeydown = function(e) {
         return;
     }
     e.preventDefault();
-    if (slideserver.connID){
+    if (socket.connID){
         send(e.keyCode);
     } else {
         handleKeyCode(e.keyCode);
