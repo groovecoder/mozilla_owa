@@ -1,0 +1,7 @@
+My Open Web Apps presentation
+
+dzslides using websockets for presentation broadcast/control.
+
+1. node slideserver.js
+2. open slides.html
+3. other browsers that access slides.html will be controlled by the original
