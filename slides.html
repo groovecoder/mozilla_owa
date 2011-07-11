@@ -22,7 +22,7 @@
 <div id="appGraph" class="graph"></div>
 <div id="appData" class="data">
     <ul>
-        <li>iOS - 420,000</li>
+        <li>iOS - 425,000</li>
         <li>Android - 300,000</li>
         <li>Blackberry - 25,000</li>
         <li>Windows Phone - 18,000</li>
@@ -50,12 +50,12 @@
 <div id="revGraph" class="graph"></div>
 <div id="revData" class="data">
     <ul>
-        <li>iTunes - $1,782</li>
+        <li>iTunes - $3,500</li>
         <li>Android - $150</li>
         <li>Blackberry - $200</li>
         <li>Nokia Ovi - $150</li>
     </ul>
-    <h3>Total - $2,282</h3>
+    <h3>Total - $4,000</h3>
 </div>
 <br style="clear: both;"/>
 </section>
@@ -258,11 +258,6 @@
     "48": "/img/icon-48.png",
     "128": "/img/icon-128.png"
   },
-  "widget": {
-    "path": "/widget.html",
-    "width": 100,
-    "height": 200
-  },
   "developer": {
     "name": "Luke Crouch",
     "url": "http://groovecoder.com"
@@ -279,6 +274,18 @@
     }
   },
   "default_locale": "en"
+    "experimental": {
+      "services": {
+          "widget": {
+               "endpoint": "/widget.html",
+               "width": 100,
+               "height": 200
+          },
+          "websocket.server": {
+               "endpoint": "/socketserver",
+          },
+      }
+    }
 }
         </pre>
     </div>
@@ -312,20 +319,23 @@
     </footer>
 </section>
 
+
 <section>
-        <h2>Widgets</h2>
+        <h2>Services</h2>
     <div style="margin-left: 3em;">
-        <pre style="font-size: 1em; width: 600px; height: 300px; overflow: auto;">
-  "widget": {
-    "path": "/iOS_widget",
-    "width": 32,
-    "height": 32
-  },
-  "widget": {
-    "path": "/windows8_widget",
-    "width": 200,
-    "height": 200
-  },
+        <pre style="font-size: .8em; width: 600px; height: 300px; overflow: auto;">
+"experimental": {
+  "services": {
+      "widget": {
+           "endpoint": "/widget.html",
+           "width": 100,
+           "height": 200
+      },
+      "websocket.server": {
+           "endpoint": "/socketserver",
+      },
+  }
+}
         </pre>
     </div>
     <footer>
@@ -335,12 +345,198 @@
 </section>
 
 <section>
-    <h2>Widgets</h2>
+    <h2>Services - Widgets</h2>
+    <div align="center">
+        <img src="images/widgets.png" />
+    </div>
     <footer>
         <h4 style="color:#ff3333">Manifest</h4>
         <img src="images/dev.jpg" width="150" height="100"/>
     </footer>
 </section>
+
+<section>
+    <h2>Services</h2>
+    <div class="bullets">
+        <ul>
+            <li><a href="https://mozillalabs.com/blog/2011/07/web-apps-update-experiments-in-web-activities-app-discovery/">Mozilla Labs</a> Web "Activities"</li>
+            <li><a href="http://paul.kinlan.me/web-intents-a-fresh-look">Google</a> Web "Intents"</li>
+        </ul>
+    </div>
+    <footer>
+        <h4 style="color:#ff3333">Manifest</h4>
+        <img src="images/dev.jpg" width="150" height="100"/>
+    </footer>
+</section>
+
+<section>
+    <h2>Publish</h2>
+    <div align="center">http://dzslidecaster.com/dzslidecaster.webapp</div>
+        <pre style="font-size: .8em; width: 800px; height: 135px; overflow: auto;">
+"services": {
+  "websocket.server": {
+       "endpoint": "/socketserver",
+  },
+}
+        </pre>
+    <div align="center">http://dzslidecaster.com/</div>
+        <pre style="font-size: .8em; width: 800px; height: 135px; overflow: auto;">
+&lt;intent 
+    action="http://webintents.org/websocket.server" 
+    type="application/draft-ietf-hybi-thewebsocketprotocol-06" 
+    href="/socketserver"
+/&gt;
+        </pre>
+    <footer>
+        <h4 style="color:#ff3333">Manifest</h4>
+        <img src="images/dev.jpg" width="150" height="100"/>
+    </footer>
+</section>
+
+<section>
+    <h2>Web Activies</h2>
+        <pre style="font-size: .8em; width: 800px; height: 110px; overflow: auto;">
+navigator.apps.invokeService(
+    'websocket.server', {"user_id": 12345},
+    function(data){ // success callback },
+    function(error){ // failure callback });
+        </pre>
+    <h2>Web Intents</h2>
+        <pre style="font-size: .8em; width: 800px; height: 135px; overflow: auto;">
+var intent = new Intent();
+intent.action = "http://webintents.org/websocket.server";
+intent.type = "application/draft-ietf-hybi-thewebsocketprotocol-06";
+intent.data = {"user_id": 12345};
+window.navigator.startActivity(intent);
+        </pre>
+</section>
+
+<section>
+    <h1>invokeService/startActivity</h1>
+    <div align="center" style="font-size: .5em;">
+        <table border="1">
+            <tr>
+                <td>action</td>
+                <td>share</td>
+                <td>share</td>
+                <td>dial</td>
+                <td>email</td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td>image/*</td>
+                <td>text/uri-list</td>
+                <td>phone</td>
+                <td>text/*</td>
+            </tr>
+            <tr>
+                <td>e.g.,</td>
+                <td><img src="http://garr.me/wp-content/uploads/2009/12/sharevia.jpg" width="150" /></td>
+                <td><img src="http://sudarmuthu.com/wp/wp-content/uploads/2011/01/sharing-content-android.png" width="150"/></td>
+                <td><img src="http://dl.dropbox.com/u/2624328/Android%20Pro/2010/July/Intents%203/intentfilters.bmp" width="150"/></td>
+                <td><img src="http://thedevelopersinfo.com/wp-content/uploads/2009/10/email.png" width="150" /></td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h1>Disovery</h1>
+    <h2>How does a web client know<br/>about web apps?</h2>
+</section>
+
+<section>
+    <h1>Self-publish</h1>
+    <div class="bullets" align="center"><img src="images/discover.png"/></div>
+</section>
+
+<section>
+    <h1>"Install"</h1>
+    <div class="bullets" align="center">
+        <pre style="font-size: 1em; width: 800px; height: 200px; overflow: auto; text-align: left;">
+"installs_allowed_from": [
+    "https://appstore.mozillalbas.com",
+    "https://dzslidecaster.com"
+],
+        </pre>
+    </div>
+    <footer>
+        <h4 style="color:#ff3333">Manifest</h4>
+        <img src="images/dev.jpg" width="150" height="100"/>
+    </footer>
+</section>
+
+<section>
+    <h1>Install</h1>
+    <div class="bullets" align="center">
+        <pre style="font-size: 1em; width: 800px; height: 300px; overflow: auto; text-align: left;">
+navigator.apps.install({
+    url: "http://groovecoder.com/dzslidecaster.webapp",
+    onsuccess: installCallback,
+    onerror: errorCallback
+    install_data: {
+        user_id: "some_user",
+        auth_token: "secret"
+    }
+});
+        </pre>
+    </div>
+</section>
+
+<section>
+    <h1>installCallback</h1>
+    <div align="center">
+        <pre style="font-size: 1em; width: 800px; height: 350px; overflow: auto; text-align: left;">
+&lt;script&gt;
+function installCallback(data){
+    navigator.apps.services.registerHandler(
+        'websocket.server', 
+        function(data) {
+            var conn = dzs.start_server(data.user_id);
+            return conn;
+        }
+    );
+}
+&lt;/script&gt;
+        </pre>
+    </div>
+</section>
+
+<section>
+    <h1>App Stores</h1>
+    <div class="bullets" align="center"><img src="images/store.png" height=400/></div>
+</section>
+
+<section>
+    <h1>App Stores</h1>
+    <div class="bullets">
+        <ul>
+            <li>Aggregate Manifests</li>
+            <li>Screen, Ratings, Reviews, etc.</li>
+            <li>Payments, Promotion, etc.</li>
+            <li>"installs_allowed_from"</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <h1>Links</h1>
+    <div class="bullets">
+        <ul>
+            <li><a href="https://apps.mozillalabs.com">apps.mozillalabs.com</a></li>
+            <li><a href="https://github.com/mozilla/openwebapps">github.com/mozilla/openwebapps</a></li>
+            <li><a href="https://developer.mozilla.org/en/OpenWebApps">MDN OpenWebApss</a></li>
+        </ul>
+    </div>
+</section>
+
+
+
+
+
+
+
+
 
 
 
@@ -453,12 +649,12 @@ function handleMessage(msg){
 
 function connect(){
     try {
-        socket = io.connect('http://localhost:8080');
+        socket = io.connect('http://50.57.109.68:8080');
     } catch(e) {
         try {
-            slideserver = new WebSocket("ws://localhost:8080");
+            slideserver = new WebSocket("ws://50.57.109.68:8080");
         } catch (e) {
-            slideserver = new MozWebSocket("ws://localhost:8080");
+            slideserver = new MozWebSocket("ws://50.57.109.68:8080");
         }
     }
     socket.on('message', function(event){handleMessage(event);})
@@ -606,7 +802,7 @@ $(function () {
     // data
     var app_data = [
         {label:'Blackberry',data:25000},
-        {label:'iOS',data:420000},
+        {label:'iOS',data:425000},
         {label:'Windows Phone',data:18000},
         {label:'Android',data:300000},
     ];
@@ -621,7 +817,7 @@ $(function () {
     $.plot($("#dotGraph"),dot_data,{series:{pie:{show:true,label:{show:true,formatter:function(label, series){return '<span style="margin-left: 1em;">'+label+'</span>';}}}},legend:{show:false}});
     var rev_data = [
         {label:'Blackberry',data:200},
-        {label:'iTunes',data:1782},
+        {label:'iTunes',data:3500},
         {label:'Nokia Ovi',data:150},
         {label:'Android',data:150},
     ];
